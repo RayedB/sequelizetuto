@@ -4,9 +4,13 @@ var passport   = require('passport');
 var session    = require('express-session');
 var bodyParser = require('body-parser');
 var env = require('dotenv').load();
+var exphbs = require('express-handlebars');
 
 //Models
 var models = require("./app/models");
+
+//Routes
+var authRoute = require('./app/routes/auth.js')(app);
 
 //Sync Database
 models.sequelize.sync().then(function() {
@@ -33,6 +37,15 @@ app.get('/', function(req, res) {
     res.send('Welcome to Passport with Sequelize');
 
 });
+
+//For Handlebars
+app.set('views', './app/views')
+app.engine('hbs', exphbs({
+    extname: '.hbs'
+}));
+app.set('view engine', '.hbs');
+
+
 
 
 app.listen(8080, function(err) {
