@@ -10,7 +10,7 @@ var exphbs = require('express-handlebars');
 var models = require("./app/models");
 
 //Routes
-var authRoute = require('./app/routes/auth.js')(app);
+var authRoute = require('./app/routes/auth.js')(app,passport);
 
 //Sync Database
 models.sequelize.sync().then(function() {
@@ -32,11 +32,9 @@ app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true}))
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
-app.get('/', function(req, res) {
 
-    res.send('Welcome to Passport with Sequelize');
-
-});
+//load passport strategies
+require('./app/config/passport/passport.js')(passport, models.user);
 
 //For Handlebars
 app.set('views', './app/views')
@@ -45,7 +43,9 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', '.hbs');
 
-
+app.get('/', function(req, res) {
+    res.send('Welcome to Passport with Sequelize');
+});
 
 
 app.listen(8080, function(err) {
