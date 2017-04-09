@@ -6,11 +6,43 @@ var bodyParser = require('body-parser');
 var env = require('dotenv').load();
 var exphbs = require('express-handlebars');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// For Passport
+
+app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+//For Handlebars
+app.set('views', './app/views')
+app.engine('hbs', exphbs({
+    extname: '.hbs'
+}));
+app.set('view engine', '.hbs');
+
+
+app.get('/', function(req, res) {
+    res.send('Welcome to Passport with Sequelize');
+});
+
+
 //Models
 var models = require("./app/models");
 
 //Routes
 var authRoute = require('./app/routes/auth.js')(app,passport);
+
+
+
+
+//load passport strategies
+require('./app/config/passport.js')(passport, models.user);
+
+
+
+
 
 //Sync Database
 models.sequelize.sync().then(function() {
@@ -22,31 +54,6 @@ models.sequelize.sync().then(function() {
     console.log(err, "Something went wrong with the Database Update!")
 
 });
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// For Passport
-
-app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true})); // session secret
-app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-
-
-//load passport strategies
-require('./app/config/passport/passport.js')(passport, models.user);
-
-//For Handlebars
-app.set('views', './app/views')
-app.engine('hbs', exphbs({
-    extname: '.hbs'
-}));
-app.set('view engine', '.hbs');
-
-app.get('/', function(req, res) {
-    res.send('Welcome to Passport with Sequelize');
-});
-
 
 app.listen(8080, function(err) {
 

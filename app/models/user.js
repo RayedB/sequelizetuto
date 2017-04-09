@@ -32,7 +32,7 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.DATE
         },
         status: {
-            type: Sequelize.ENUM('active', 'inactive'),
+            type: Sequelize.ENUM('admin','active', 'inactive'),
             defaultValue: 'active'
         }
 
