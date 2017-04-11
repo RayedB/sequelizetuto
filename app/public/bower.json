@@ -1,0 +1,16 @@
+{
+  "name": "sequelizetuto",
+  "homepage": "https://github.com/RayedB/sequelizetuto",
+  "authors": [
+    "Rayed Benbrahim <rayed.benbrahim@gmail.com>"
+  ],
+  "description": "blog in node express sequelize",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "animate.css": "^3.5.2",
+    "font-awesome": "fontawesome#^4.7.0"
+  }
+}
