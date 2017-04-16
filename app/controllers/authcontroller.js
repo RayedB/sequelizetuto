@@ -1,17 +1,23 @@
 var Post = require("../models/").Post;
 var User = require("../models/").user;
+var path = require("path");
+
 var exports = module.exports = {}
  
 exports.signup = function(req, res) {
  
-    res.render('register');
+    res.sendFile('register.html', { root: path.join(__dirname, '../public','views') });
  
 }
 
 exports.signin = function(req, res) {
  
-    res.render('signin');
+    res.sendFile('login.html', { root: path.join(__dirname, '../public','views') });
  
+}
+
+exports.loggedin = function(req,res){
+  res.status(200).sendFile('index.html', { root: path.join(__dirname, '../public','views') });
 }
 
 exports.dashboard = function(req,res){
